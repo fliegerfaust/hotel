@@ -1,0 +1,38 @@
+<%= form_for(@user, :html => { :class => "form-horizontal" }) do |f| %>
+  <% if @user.errors.any? %>
+    <div class="alert alert-danger alert-dismissable">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      <h4><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h4>
+
+      <ul>
+      <% @user.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :name, "Логин", :class => "col-lg-1 control-label" %>
+    <div class="col-lg-3">
+      <%= f.text_field :name, :class => "form-control" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :password, "Пароль", :class => "col-lg-1 control-label" %>
+    <div class="col-lg-3">
+      <%= f.password_field :password, :class => "form-control" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :password_confirmation, "Подтвердить", :class => "col-lg-1 control-label" %>
+    <div class="col-lg-3">
+      <%= f.password_field :password_confirmation, :class => "form-control" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-lg-offset-3">
+      <%= f.submit "Создать", :class => "btn btn-primary" %>
+    </div>
+  </div>
+<% end %>

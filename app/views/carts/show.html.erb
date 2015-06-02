@@ -1,0 +1,41 @@
+<div class="page-header">
+
+<% unless @cart.line_items.empty? %>
+<h1>Ваш список бронирования</h1>
+  <ul>
+  	<%= content_tag_for(:li, @cart.line_items) do |item| %>
+  		<%= item.quantity_item %> &times; <%= item.room.title + " " + item.room.roomtype %> - 
+  		<%= number_to_currency(item.total_price,
+  																 :unit => 'Руб', :format => "%n %u") %>
+  	<% end %>
+  </ul>
+  
+  <p><b>Цена/сутки:</b>
+  <%= number_to_currency(@cart.total_price, 
+  																	:unit => 'Руб', :format => "%n %u") %>
+  <% session[:total_price] = @cart.total_price %>
+  </p>
+  <!--
+  <p><b>How session works:</b><br>
+  <%= session[:first_type_quant] %>
+  <%= session[:second_type_quant] %>
+  <%= session[:third_type_quant] %>
+  </p>
+  -->
+  </div>
+ 		
+ 		<p><%= button_to 'Оформить', new_order_path, method: :get, 
+ 											:class => 'btn btn-success' %></p>	
+  	<p><%= button_to 'Очистить', @cart, method: :delete, 
+  		data: {confirm: 'Вы уверены?'}, :class => 'btn btn-danger' %></p>
+  
+<% end %>
+
+<!-- Если список заказов пуст(R-List), то скажем об этом клиенту -->
+
+<% if @cart.line_items.empty? %>
+<h1>Ваш список бронирования пуст!</h1>
+<% end %>
+
+<dl class="dl-horizontal">
+</dl>

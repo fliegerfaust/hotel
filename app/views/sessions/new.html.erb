@@ -1,0 +1,36 @@
+<div class="page-header">     
+
+<h1>Войти</h1>  
+
+</div>
+
+<%= form_tag :html => { :class => "form-horizontal" } do %>  
+      <p>
+      <div class="form-group">
+        <%= label_tag :name, 'Логин:', :class => "col-lg-1 control-label" %>
+        	<div class="col-lg-3">
+        		<%= text_field_tag :name, params[:name], :class => "form-control" %>
+        	</div>
+      </div>
+      </p>
+      
+      <br>
+      <br>
+      
+      <p>
+      <div class="form-group"> 	
+        <%= label_tag :password, 'Пароль:', :class => "col-lg-1 control-label" %>
+        <div class="col-lg-3">
+        	<%= password_field_tag :password, params[:password], :class => "form-control" %>
+      	</div>
+      </p>
+      <br>
+      <br>
+      <div class="form-group">
+    		<div class="col-lg-offset-3 col-lg-3">
+        	<%= submit_tag "Вход", :class => "btn btn-success" %>
+      	</div>
+      </div>
+  <% end %>
+  
+

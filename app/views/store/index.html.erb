@@ -1,0 +1,29 @@
+<h1>Выбор номеров</h1>
+<div class="table-responsive">
+  <table class="table table-hover">
+
+    <tbody>
+      <%= content_tag_for(:tr, @rooms) do |room| %>
+      
+      			<td><%= image_tag(room.image_url, class: 'list-image') %></td>
+      			
+            <td class = "title_and_type">
+            	<dt><%= room.title %> <%= room.roomtype %></dt>
+            	<hr>
+            	<dn> <b>Цена:</b> <br><%= number_to_currency(room.price, 
+            														:unit => 'Руб', :format => "%n %u") %>/сутки</dn>
+            	<%= button_to 'В R-список', line_items_path(room_id: room), 
+            			:class => 'btn btn-success' %>
+    						 
+            	<hr>
+            	<dn> <b>Количество:</b> <%= room.quantity %></dn>
+            </td>
+            
+            <td class = "list_description"><u>В номер включено:</u> <%= truncate(
+            															strip_tags(room.description),length: 300) %> 
+        		</td>
+           
+      <% end %>
+     </tbody>
+	</table>
+</div>

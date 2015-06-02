@@ -1,0 +1,32 @@
+<div class="page-header">
+  <%= link_to orders_path, :class => 'btn btn-default' do %>
+    <span class="glyphicon glyphicon-list-alt"></span>
+    Back
+  <% end %>
+  <%= link_to edit_order_path(@order), :class => 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-pencil"></span>
+    Edit
+  <% end %>
+  <h1>Show order</h1>
+</div>
+
+<dl class="dl-horizontal">
+  <dt>ФИО:</dt>
+  <dd><%= @order.name %></dd>
+
+  <dt>Email:</dt>
+  <dd><%= @order.email %></dd>
+
+  <dt>Телефон:</dt>
+  <dd><%= @order.mobile %></dd>
+  
+  <dt>Дата заезда:</dt>
+  <dd><%= @order.date_of_arrival %></dd>
+  
+  <dt>Дата выезда</dt>
+  <dd><%= @order.date_of_departure %></dd>
+  
+  <dt>Бронь:</dt>
+  <dd><%= @order.reserved_rooms %></dd>
+
+</dl>

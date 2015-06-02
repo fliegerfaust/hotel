@@ -1,0 +1,146 @@
+<%= form_for(@order, :html => { :class => "form-horizontal" }) do |f| %>
+  <% if @order.errors.any? %>
+    <div class="alert alert-danger alert-dismissable">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      <h4><%= pluralize(@order.errors.count, "error") %> prohibited this order from being saved:</h4>
+
+      <ul>
+      <% @order.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+  <%= f.hidden_field :lock_version %>
+  <%= hidden_field_tag 'day_price', session[:total_price]  %>
+  <div class="form-group">
+    <%= f.label :name, :class => "col-lg-1 control-label" %>
+    <div class="col-lg-4">
+      <%= f.text_field :name, size: 40, :class => "form-control" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :email, :class => "col-lg-1 control-label" %>
+    <div class="col-lg-4">
+      <%= f.email_field :email, size: 40, :class => "form-control" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :mobile, :class => "col-lg-1 control-label" %>
+    <div class="col-lg-4">
+      <%= f.telephone_field :mobile, size: 40, :class => "form-control" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :date_of_arrival, :class => "col-lg-1 control-label" %>
+    <div class="col-lg-4">
+      <%= f.date_select :date_of_arrival, size: 40, :class => "form-control" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :date_of_departure, :class => "col-lg-1 control-label" %>
+    <div class="col-lg-4">
+      <%= f.date_select :date_of_departure, size: 40, :class => "form-control" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-lg-offset-4">
+      <%= f.submit 'Оформить', :class => "btn btn-primary" %>
+    </div>
+  </div>
+<% end %>
+
+<hr>
+<b>Цена/сутки:</b><br>
+<%= number_to_currency(session[:total_price], 
+  																	:unit => 'Руб', :format => "%n %u") %><br>
+<b>Общая цена:</b><div id="days"></div>
+
+<script type="text/javascript">
+// "JavaScript Форматирование чисел по разрядности"
+function number_format(_number, _cfg){
+    function obj_merge(obj_first, obj_second){
+        var obj_return = {};
+        for (key in obj_first){
+            if (typeof obj_second[key] !== 'undefined') obj_return[key] = obj_second[key];
+            else obj_return[key] = obj_first[key];
+        }
+        return obj_return;
+    }
+    function thousands_sep(_num, _sep){
+        if (_num.length <= 3) return _num;
+        var _count = _num.length;
+        var _num_parser = '';
+        var _count_digits = 0;
+        for (var _p = (_count - 1); _p >= 0; _p--){
+            var _num_digit = _num.substr(_p, 1);
+            if (_count_digits % 3 == 0 && _count_digits != 0 && !isNaN(parseFloat(_num_digit))) _num_parser = _sep + _num_parser;
+            _num_parser = _num_digit + _num_parser;
+            _count_digits++;
+        }
+        return _num_parser;
+    }
+    if (typeof _number !== 'number'){
+        _number = parseFloat(_number);
+        if (isNaN(_number)) return false;
+    }
+    var _cfg_default = {
+        before: '', 
+        after: '', 
+        decimals: 2, 
+        dec_point: '.', 
+        thousands_sep: ','
+    };
+    if (_cfg && typeof _cfg === 'object'){
+        _cfg = obj_merge(_cfg_default, _cfg);
+    }
+    else _cfg = _cfg_default;
+    _number = _number.toFixed(_cfg.decimals);
+    if(_number.indexOf('.') != -1){
+        var _number_arr = _number.split('.');
+        var _number = thousands_sep(_number_arr[0], _cfg.thousands_sep) + _cfg.dec_point + _number_arr[1];
+    }
+    else var _number = thousands_sep(_number, _cfg.thousands_sep);
+    return _cfg.before + _number + _cfg.after;
+}
+</script>
+
+<script type="text/javascript">
+	
+		var getValues = function() {
+			arr_year = $("#order_date_of_arrival_1i").val();
+			arr_month = $("#order_date_of_arrival_2i").val();
+			arr_day = $("#order_date_of_arrival_3i").val();
+		
+			dep_year = $("#order_date_of_departure_1i").val();
+			dep_month = $("#order_date_of_departure_2i").val();
+			dep_day = $("#order_date_of_departure_3i").val();
+			
+			var values = { 'arr_year':arr_year, 'arr_month':arr_month, 'arr_day':arr_day,
+										 'dep_year':dep_year, 'dep_month':dep_month, 'dep_day':dep_day }
+			return values;
+		}	
+		
+		var setDays = function(values) {
+			var arr_date = Date.UTC(values.arr_year, values.arr_month, values.arr_day);
+			var dep_date = Date.UTC(values.dep_year, values.dep_month, values.dep_day);
+			var days = (dep_date - arr_date)/(1000*60*60*24);
+			var day_price = $('#day_price').val();
+			if (days < 0 ) {
+				days = 0;
+			}
+			var total_price = days * day_price;
+			
+			$('#days').html(number_format(total_price,{after: " Руб"}));
+		}
+		
+		$("select").change(function () {
+			var values = getValues();
+			setDays(values);
+		});
+		
+		var values = getValues();
+		setDays(values);
+		
+</script>

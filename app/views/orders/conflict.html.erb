@@ -1,0 +1,18 @@
+<div class="page-header">
+  <%= link_to orders_path, :class => 'btn btn-default' do %>
+    <span class="glyphicon glyphicon-list-alt"></span>
+    Back
+  <% end %>
+  <%= link_to @order, :class => 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-info-sign"></span>
+    Show
+  <% end %>
+  <h1>Edit order conflict</h1>
+			<div class="alert alert-danger alert-dismissable">
+			Someone edited the product the same time you did. Please re-apply your changes to the product.
+			</div>
+
+</div>
+
+<h2>Edit order:</h2>
+<%= render 'form' %>
